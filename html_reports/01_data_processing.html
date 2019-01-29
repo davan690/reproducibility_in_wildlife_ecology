@@ -313,6 +313,11 @@ str(raw_data)
 <pre><code class="r">raw_data$Why.not.reviewed &lt;- NA
 </code></pre>
 
+<p>Fill in with &ldquo;NA-Was reviewed&rdquo; for all reviewed studies:</p>
+
+<pre><code class="r">raw_data$Why.not.reviewed[raw_data$Was.this.paper.reviewed..==&quot;True&quot;] &lt;- &quot;NA: Study was reviewed&quot;
+</code></pre>
+
 <p>If unsuitable, add this information in:</p>
 
 <pre><code class="r">raw_data$Why.not.reviewed[raw_data$Was.this.paper.reviewed..==&quot;False, unsuitable for review&quot;] &lt;- 
@@ -334,7 +339,128 @@ author never responded.&rdquo; I need to remove this specific data point.</p>
                      raw_data$Was.this.paper.reviewed.. == &quot;False, author never responded&quot;),]
 </code></pre>
 
+<p>In the second case, we had to send in a written proposal to a regulatory agency to get
+the data. We thought that we would not get the proposal accepted, so we thought 
+that we would be unable to review this project. But, in the end, the proposal was accepted and
+we reviewed this study. I will need to remove the data point that incorrectly
+files wsb038 as &ldquo;False, for other reasons not stated above&rdquo;</p>
+
+<pre><code class="r">new_data &lt;- new_data[!(new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb038&quot; &amp;
+                         new_data$Was.this.paper.reviewed.. == &quot;False, for other reasons not stated above&quot;),]
+</code></pre>
+
 <h3>Track down reasons for &ldquo;False, author declined to participate&hellip;&rdquo;</h3>
+
+<p>What studies was this true for?</p>
+
+<pre><code class="r">new_data$Study.ID..e.g...wsb002.or.jwm040.[new_data$Was.this.paper.reviewed.. == 
+                    &quot;False, author declined to participate (e.g., private data, no time, etc)&quot;]
+</code></pre>
+
+<pre><code>##  [1] &quot;jwm003&quot; &quot;jwm005&quot; &quot;jwm011&quot; &quot;jwm016&quot; &quot;jwm031&quot; &quot;wsb001&quot; &quot;wsb005&quot;
+##  [8] &quot;wsb039&quot; &quot;wsb037&quot; &quot;jwm036&quot;
+</code></pre>
+
+<p>I want to classify responses:</p>
+
+<ul>
+<li>jwm003: proprietary/confidential data</li>
+<li>jwm005: no reason given, just declined to participate</li>
+<li>jwm011: not enough time to prepare data</li>
+<li>jwm016: future articles on same data</li>
+<li>jwm031: no reason given, just declined to participate</li>
+<li>wsb001: proprietary/confidential data</li>
+<li>wsb005: not enough time to prepare data</li>
+<li>wsb039: proprietary/confidential data</li>
+<li>wsb037: proprietary/confidential data, <em>noteably, author states the study is not reproducible</em></li>
+<li>jwm036: not enough time to prepare data, <em>noteably, author states the study is not reproducible</em></li>
+</ul>
+
+<pre><code class="r">new_data$Why.not.reviewed &lt;- ifelse(test = 
+                                      new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm003&quot; |
+                                      new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb039&quot; |
+                                      new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb037&quot; |
+                                      new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb001&quot;,
+                                    yes = &quot;Author Declined: Proprietary/confidential data&quot;, 
+                                    no = ifelse(test = 
+                                                  new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm005&quot; |
+                                                  new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm031&quot;,
+                                                yes = &quot;Author Declined: No reason given&quot;,
+                                                no = ifelse(test = 
+                                                              new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm011&quot; |
+                                                              new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb005&quot; |
+                                                              new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm036&quot;,
+                                                            yes = &quot;Author Declined: Not enough time&quot;,
+                                                            no = ifelse(test = new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm016&quot;,
+                                                                        yes = &quot;Author Declined: Data saved for future article&quot;,
+                                                                        no = new_data$Why.not.reviewed))
+                                    ))
+</code></pre>
+
+<h3>Track down reasons for &ldquo;False, for other reasons not stated above&rdquo;</h3>
+
+<p>What studies was this true for?</p>
+
+<pre><code class="r">new_data$Study.ID..e.g...wsb002.or.jwm040.[new_data$Was.this.paper.reviewed.. ==
+                                             &quot;False, for other reasons not stated above&quot;]
+</code></pre>
+
+<pre><code>## [1] &quot;wsb020&quot; &quot;wsb029&quot; &quot;wsb007&quot; &quot;wsb027&quot; &quot;jwm038&quot;
+</code></pre>
+
+<p>Classify reasons:</p>
+
+<ul>
+<li>wsb020: unable to contact primary investigator, but co-author informed us also proprietary/confidential data</li>
+<li>wsb029: did not hear back from author, incorrectly coded: should have been &ldquo;No correspondence&rdquo;</li>
+<li>wsb007: author wanted to participate, but did not send data in time</li>
+<li>wsb027: author wanted to participate, but did not send data in time</li>
+<li>jwm038: unable to find email for author, incorrectly coded: Should have been &ldquo;No correspondence&rdquo;</li>
+</ul>
+
+<pre><code class="r">new_data$Why.not.reviewed &lt;- ifelse(test = 
+                                      new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb020&quot;, 
+                                    yes = &quot;Author Declined: Proprietary/confidential data&quot;,
+                                    no = ifelse(test = 
+                                                  new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb029&quot; |
+                                                  new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm038&quot;,
+                                                yes = &quot;No correspondence&quot;,
+                                                no = ifelse(test = 
+                                                              new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb007&quot; |
+                                                              new_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb027&quot;,
+                                                            yes = &quot;Author wanted to participate, but did not send data&quot;,
+                                                            no = new_data$Why.not.reviewed)))
+</code></pre>
+
+<p>Look at results</p>
+
+<pre><code class="r">table(new_data$Why.not.reviewed)
+</code></pre>
+
+<pre><code>## 
+##      Author Declined: Data saved for future article 
+##                                                   1 
+##                    Author Declined: No reason given 
+##                                                   2 
+##                    Author Declined: Not enough time 
+##                                                   3 
+##      Author Declined: Proprietary/confidential data 
+##                                                   5 
+## Author wanted to participate, but did not send data 
+##                                                   2 
+##                              NA: Study was reviewed 
+##                                                  32 
+##                                   No correspondence 
+##                                                  42 
+##                               Unsuitable for review 
+##                                                   6
+</code></pre>
+
+<pre><code class="r">sum(table(new_data$Why.not.reviewed))
+</code></pre>
+
+<pre><code>## [1] 93
+</code></pre>
 
 <hr/>
 
