@@ -14,7 +14,6 @@
 library(ezknitr)
 library(knitr)
 library(devtools)
-library(doBy)
 
 #' Clear environment and set seed
 #' 
@@ -24,7 +23,8 @@ set.seed(2647)
 #' _____________________________________________________________________________
 #' ## Load Data
 #' 
-raw_data <- read.csv(file = "data/google_form_data_raw.csv", stringsAsFactors = F,
+raw_data <- read.csv(file = "data/google_form_data_raw.csv", 
+                     stringsAsFactors = F,
                      header = T)
 str(raw_data)
 
@@ -35,7 +35,7 @@ str(raw_data)
 #'  responses were filled in, so I will update those records with "TRUE"
 #' 
 #' View responses to this column
-table(raw_data$Was.this.paper.reviewed..)
+table(raw_data$Was.this.paper.reviewed.)
 #' Replace "" with "True"
 raw_data$Was.this.paper.reviewed.. <- ifelse(
   test = raw_data$Was.this.paper.reviewed.. == "", 
