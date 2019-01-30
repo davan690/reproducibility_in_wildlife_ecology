@@ -35,7 +35,7 @@ str(raw_data)
 #'  responses were filled in, so I will update those records with "TRUE"
 #' 
 #' View responses to this column
-table(raw_data$Was.this.paper.reviewed.)
+table(raw_data$Was.this.paper.reviewed..)
 #' Replace "" with "True"
 raw_data$Was.this.paper.reviewed.. <- ifelse(
   test = raw_data$Was.this.paper.reviewed.. == "", 
@@ -237,12 +237,14 @@ reviewed_data$Code.available <- ifelse(
   ))
 #' 3. Analysis was entirely code based
 #' 
-#' Actually true for wsb035, jwm010, wsb006, wsb023
+#' Actually true for wsb035, jwm010, wsb006, wsb023, jwm024 and jwm028
 reviewed_data$Analysis.was.entirely.code.based <- ifelse(
   test = reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "wsb035" |
     reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "jwm010" |
     reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "wsb006" |
-    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "wsb023",
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "wsb023" |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "jwm024" |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "jwm028",
   yes = "True",
   no = reviewed_data$Analysis.was.entirely.code.based)
 
@@ -252,7 +254,8 @@ reviewed_data$Analysis.was.entirely.code.based <- ifelse(
 #' 
 reviewed_data$Was.the.data.pre.processed.or.shared.in.original.raw.format. <- ifelse(
   test = reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "wsb004" |
-    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "wsb010",
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "wsb010" |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "jwm028",
   yes = "Pre-processed",
   no = ifelse(
     test = reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == "jwm010" |
