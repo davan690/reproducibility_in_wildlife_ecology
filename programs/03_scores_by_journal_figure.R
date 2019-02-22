@@ -26,8 +26,6 @@ set.seed(8675)
 #' 
 #' 
 load(file = "data/processed_data/averages_of_reviewed_studies.Rdata")
-load(file = "data/processed_data/reviewed_studies_data.Rdata")
-load(file = "data/processed_data/all_studies_data.Rdata")
 
 
 
@@ -43,27 +41,27 @@ colnames(plottingdata) <- c("Score", "SE", "upper", "lower",
 #' ### Fill in with reproducibility of figures scores
 #' 
 #' JWM
-plottingdata$Score[1] <- mean(averages$graphsReproduced[averages$journal=="JWM"])
-plottingdata$SE[1] <- sd(averages$graphsReproduced[averages$journal=="JWM"])/
-  sqrt(length(averages$graphsReproduced[averages$journal=="JWM"]))
+plottingdata$Score[1] <- 
+  na.exclude(mean(averages$graphsReproduced[averages$journal=="JWM"]))
+plottingdata$SE[1] <- 
+  sd(na.exclude(averages$graphsReproduced[averages$journal=="JWM"]))/
+  sqrt(na.exclude(length(averages$graphsReproduced[averages$journal=="JWM"])))
 plottingdata$Category[1] <- "Figures Reproduced"
 plottingdata$journal[1] <- "JWM"
 
 #' WSB
-plottingdata$Score[2] <- mean(averages$graphsReproduced[averages$journal=="WSB"],
-                             na.rm = T)
-plottingdata$SE[2] <- sd(averages$graphsReproduced[averages$journal=="WSB"],
-                         na.rm = T)/
-  sqrt(length(averages$graphsReproduced[averages$journal=="WSB"])-1)
+plottingdata$Score[2] <- 
+  mean(na.exclude(averages$graphsReproduced[averages$journal=="WSB"]))
+plottingdata$SE[2] <- 
+  sd(na.exclude(averages$graphsReproduced[averages$journal=="WSB"]))/
+  sqrt(na.exclude(length(averages$graphsReproduced[averages$journal=="WSB"])))
 plottingdata$Category[2] <- "Figures Reproduced"
 plottingdata$journal[2] <- "WSB"
 
 #' Overall
-plottingdata$Score[3] <- mean(averages$graphsReproduced,
-                             na.rm = T)
-plottingdata$SE[3] <- sd(averages$graphsReproduced,
-                         na.rm = T)/
-  sqrt(length(averages$graphsReproduced)-1)
+plottingdata$Score[3] <- mean(na.exclude(averages$graphsReproduced))
+plottingdata$SE[3] <- sd(na.exclude(averages$graphsReproduced))/
+  sqrt(na.exclude(length(averages$graphsReproduced)))
 plottingdata$Category[3] <- "Figures Reproduced"
 plottingdata$journal[3] <- "Overall"
 
@@ -71,27 +69,27 @@ plottingdata$journal[3] <- "Overall"
 #' ### Fill in with reproducibility of numbers scores
 #' 
 #' JWM
-plottingdata$Score[4] <- mean(averages$numbersReproduced[averages$journal=="JWM"])
-plottingdata$SE[4] <- sd(averages$numbersReproduced[averages$journal=="JWM"])/
-  sqrt(length(averages$numbersReproduced[averages$journal=="JWM"]))
+plottingdata$Score[4] <- 
+  mean(na.exclude(averages$numbersReproduced[averages$journal=="JWM"]))
+plottingdata$SE[4] <- 
+  sd(na.exclude(averages$numbersReproduced[averages$journal=="JWM"]))/
+  sqrt(na.exclude(length(averages$numbersReproduced[averages$journal=="JWM"])))
 plottingdata$Category[4] <- "Numbers Reproduced"
 plottingdata$journal[4] <- "JWM"
 
 #' WSB
-plottingdata$Score[5] <- mean(averages$numbersReproduced[averages$journal=="WSB"],
-                             na.rm = T)
-plottingdata$SE[5] <- sd(averages$numbersReproduced[averages$journal=="WSB"],
-                         na.rm = T)/
-  sqrt(length(averages$numbersReproduced[averages$journal=="WSB"]))
+plottingdata$Score[5] <- 
+  mean(na.exclude(averages$numbersReproduced[averages$journal=="WSB"]))
+plottingdata$SE[5] <- 
+  sd(na.exclude(averages$numbersReproduced[averages$journal=="WSB"]))/
+  sqrt(na.exclude(length(averages$numbersReproduced[averages$journal=="WSB"])))
 plottingdata$Category[5] <- "Numbers Reproduced"
 plottingdata$journal[5] <- "WSB"
 
 #' Overall
-plottingdata$Score[6] <- mean(averages$numbersReproduced,
-                             na.rm = T)
-plottingdata$SE[6] <- sd(averages$numbersReproduced,
-                         na.rm = T)/
-  sqrt(length(averages$numbersReproduced))
+plottingdata$Score[6] <- mean(na.exclude(averages$numbersReproduced))
+plottingdata$SE[6] <- sd(na.exclude(averages$numbersReproduced))/
+  sqrt(na.exclude(length(averages$numbersReproduced)))
 plottingdata$Category[6] <- "Numbers Reproduced"
 plottingdata$journal[6] <- "Overall"
 
@@ -99,27 +97,27 @@ plottingdata$journal[6] <- "Overall"
 #' ### Fill in with reproducibility of conclusions scores
 #' 
 #' JWM
-plottingdata$Score[7] <- mean(averages$conclusionsReproduced[averages$journal=="JWM"])
-plottingdata$SE[7] <- sd(averages$conclusionsReproduced[averages$journal=="JWM"])/
-  sqrt(length(averages$conclusionsReproduced[averages$journal=="JWM"]))
+plottingdata$Score[7] <- 
+  mean(na.exclude(averages$conclusionsReproduced[averages$journal=="JWM"]))
+plottingdata$SE[7] <- 
+  sd(na.exclude(averages$conclusionsReproduced[averages$journal=="JWM"]))/
+  sqrt(na.exclude(length(averages$conclusionsReproduced[averages$journal=="JWM"])))
 plottingdata$Category[7] <- "Conclusions Reproduced"
 plottingdata$journal[7] <- "JWM"
 
 #' WSB
-plottingdata$Score[8] <- mean(averages$conclusionsReproduced[averages$journal=="WSB"],
-                             na.rm = T)
-plottingdata$SE[8] <- sd(averages$conclusionsReproduced[averages$journal=="WSB"],
-                         na.rm = T)/
-  sqrt(length(averages$conclusionsReproduced[averages$journal=="WSB"]))
+plottingdata$Score[8] <- 
+  mean(na.exclude(averages$conclusionsReproduced[averages$journal=="WSB"]))
+plottingdata$SE[8] <- 
+  sd(na.exclude(averages$conclusionsReproduced[averages$journal=="WSB"]))/
+  sqrt(na.exclude(length(averages$conclusionsReproduced[averages$journal=="WSB"])))
 plottingdata$Category[8] <- "Conclusions Reproduced"
 plottingdata$journal[8] <- "WSB"
 
 #' Overall
-plottingdata$Score[9] <- mean(averages$conclusionsReproduced,
-                             na.rm = T)
-plottingdata$SE[9] <- sd(averages$conclusionsReproduced,
-                         na.rm = T)/
-  sqrt(length(averages$conclusionsReproduced))
+plottingdata$Score[9] <- mean(na.exclude(averages$conclusionsReproduced))
+plottingdata$SE[9] <- sd(na.exclude(averages$conclusionsReproduced))/
+  sqrt(na.exclude(length(averages$conclusionsReproduced)))
 plottingdata$Category[9] <- "Conclusions Reproduced"
 plottingdata$journal[9] <- "Overall"
 
