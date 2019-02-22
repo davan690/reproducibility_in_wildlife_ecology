@@ -228,12 +228,13 @@ set.seed(2647)
 
 <h2>Load Data</h2>
 
-<pre><code class="r">raw_data &lt;- read.csv(file = &quot;data/google_form_data_raw.csv&quot;, stringsAsFactors = F,
+<pre><code class="r">raw_data &lt;- read.csv(file = &quot;data/google_form_data_raw.csv&quot;, 
+                     stringsAsFactors = F,
                      header = T)
 str(raw_data)
 </code></pre>
 
-<pre><code>## &#39;data.frame&#39;:    95 obs. of  14 variables:
+<pre><code>## &#39;data.frame&#39;:    101 obs. of  14 variables:
 ##  $ Timestamp                                                                             : chr  &quot;2018/07/25 1:16:00 PM CDT&quot; &quot;2018/07/25 1:18:47 PM CDT&quot; &quot;2018/07/25 2:29:22 PM CDT&quot; &quot;2018/07/25 3:01:47 PM CDT&quot; ...
 ##  $ Study.ID..e.g...wsb002.or.jwm040.                                                     : chr  &quot;wsb028&quot; &quot;jwm019&quot; &quot;wsb015&quot; &quot;wsb013&quot; ...
 ##  $ Reviewer.s.Initials..yours.                                                           : chr  &quot;AAA&quot; &quot;ADJ&quot; &quot;KV&quot; &quot;FI&quot; ...
@@ -275,7 +276,7 @@ str(raw_data)
 ##                                             False, unsuitable for review 
 ##                                                                        6 
 ##                                                                     True 
-##                                                                       26
+##                                                                       32
 </code></pre>
 
 <p>Replace &ldquo;&rdquo; with &ldquo;True&rdquo;</p>
@@ -301,7 +302,7 @@ str(raw_data)
 ##                                             False, unsuitable for review 
 ##                                                                        6 
 ##                                                                     True 
-##                                                                       32
+##                                                                       38
 </code></pre>
 
 <hr/>
@@ -449,7 +450,7 @@ files wsb038 as &ldquo;False, for other reasons not stated above&rdquo;</p>
 ## Author wanted to participate, but did not send data 
 ##                                                   2 
 ##                              NA: Study was reviewed 
-##                                                  32 
+##                                                  38 
 ##                                   No correspondence 
 ##                                                  42 
 ##                               Unsuitable for review 
@@ -459,16 +460,382 @@ files wsb038 as &ldquo;False, for other reasons not stated above&rdquo;</p>
 <pre><code class="r">sum(table(new_data$Why.not.reviewed))
 </code></pre>
 
-<pre><code>## [1] 93
+<pre><code>## [1] 99
 </code></pre>
 
 <hr/>
 
-<h2>3rd Section of Code</h2>
+<h2>Add in journal column</h2>
+
+<pre><code class="r">new_data$journal[grep(&quot;jwm&quot;, x = new_data$Study.ID..e.g...wsb002.or.jwm040.)] &lt;-
+  &quot;JWM&quot;
+new_data$journal[grep(&quot;wsb&quot;, x = new_data$Study.ID..e.g...wsb002.or.jwm040.)] &lt;-
+  &quot;WSB&quot;
+table(new_data$journal)
+</code></pre>
+
+<pre><code>## 
+## JWM WSB 
+##  47  52
+</code></pre>
+
+<hr/>
+
+<h2>Summarize results for studies that were reviewed</h2>
+
+<p>There were two reviewers for each reviewed study:</p>
+
+<pre><code class="r">table(new_data$Study.ID..e.g...wsb002.or.jwm040.[new_data$Was.this.paper.reviewed..==&quot;True&quot;])
+</code></pre>
+
+<pre><code>## 
+## jwm004 jwm010 jwm019 jwm022 jwm024 jwm027 jwm028 wsb004 wsb006 wsb008 
+##      2      2      2      2      2      2      2      2      2      2 
+## wsb010 wsb013 wsb014 wsb015 wsb018 wsb023 wsb028 wsb035 wsb038 
+##      2      2      2      2      2      2      2      2      2
+</code></pre>
+
+<p>So, we need to average the scores to the questions:</p>
+
+<ul>
+<li>&ldquo;Were.the.study.s.figures.reproduced..&rdquo; </li>
+<li>&ldquo;Were.the.numbers.in.the.study.s.tables.and.or.results.text.quantitatively.reproduced..&rdquo;</li>
+<li>&ldquo;Were.the.study.s.conclusions.reproduced..&rdquo; </li>
+</ul>
+
+<p>Subset data to reviewed studies only and check for missing data, where there should be data:</p>
+
+<pre><code class="r">reviewed_data &lt;- new_data[new_data$Was.this.paper.reviewed..==&quot;True&quot;,]
+summary(reviewed_data$Were.the.study.s.figures.reproduced..)
+</code></pre>
+
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##   1.000   1.750   4.000   3.361   5.000   5.000       2
+</code></pre>
+
+<pre><code class="r">summary(reviewed_data$Were.the.numbers.in.the.study.s.tables.and.or.results.text.quantitatively.reproduced..)
+</code></pre>
+
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##   1.000   2.000   4.000   3.297   4.000   5.000       1
+</code></pre>
+
+<pre><code class="r">summary(reviewed_data$Were.the.study.s.conclusions.reproduced..)
+</code></pre>
+
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##   1.000   3.000   4.000   3.703   5.000   5.000       1
+</code></pre>
+
+<p>For one of these studies with NAs, there were no figures, so I will replace with a &ldquo;99&rdquo;</p>
+
+<pre><code class="r">reviewed_data$Were.the.study.s.figures.reproduced..[reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb018&quot;] &lt;- 99
+</code></pre>
+
+<p>For another of these studies, the study was completely unreproducible, so the 
+reviewer erroneously didn&#39;t answer these questions. These should have been &ldquo;1s&rdquo;</p>
+
+<pre><code class="r">reviewed_data$Were.the.study.s.figures.reproduced..[reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb008&quot;] &lt;- 1
+reviewed_data$Were.the.numbers.in.the.study.s.tables.and.or.results.text.quantitatively.reproduced..[
+  reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb008&quot;] &lt;- 1
+reviewed_data$Were.the.study.s.conclusions.reproduced..[reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb008&quot;] &lt;- 1
+</code></pre>
+
+<p>Summarize information by reviewed study with a for-loop</p>
+
+<pre><code class="r">study_names &lt;- unique(reviewed_data$Study.ID..e.g...wsb002.or.jwm040.)
+for(ss in 1:length(study_names)){
+  subsetdata &lt;- reviewed_data[reviewed_data$Study.ID..e.g...wsb002.or.jwm040.==study_names[ss],]
+
+  # Check for disagreements amongst answers
+  if(length(unique(subsetdata[,&quot;Data.readily.available.&quot;]))&gt;=2){
+    print(paste(study_names[ss], &quot;error: data readily available&quot;))
+  }
+  if(length(unique(subsetdata[,&quot;Was.the.data.pre.processed.or.shared.in.original.raw.format.&quot; ]))&gt;=2){
+    print(paste(study_names[ss], &quot;error: was data pre processed&quot;))
+  }
+  if(length(unique(subsetdata[,&quot;Code.available&quot; ]))&gt;=2){
+    print(paste(study_names[ss], &quot;error: code available&quot;))
+  }
+  if(length(unique(subsetdata[,&quot;Analysis.was.entirely.code.based&quot; ]))&gt;=2){
+    print(paste(study_names[ss], &quot;error: was analysis code based&quot;))
+  }
+  if(length(unique(subsetdata[,&quot;Can.code.be.run.as.is..&quot; ]))&gt;=2){
+    print(paste(study_names[ss], &quot;error: Can.code.be.run.as.is..&quot;))
+  }
+}
+</code></pre>
+
+<pre><code>## [1] &quot;wsb028 error: data readily available&quot;
+## [1] &quot;wsb013 error: code available&quot;
+## [1] &quot;wsb035 error: data readily available&quot;
+## [1] &quot;wsb035 error: was analysis code based&quot;
+## [1] &quot;wsb004 error: was data pre processed&quot;
+## [1] &quot;jwm010 error: was data pre processed&quot;
+## [1] &quot;jwm010 error: was analysis code based&quot;
+## [1] &quot;jwm010 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;wsb018 error: data readily available&quot;
+## [1] &quot;wsb006 error: data readily available&quot;
+## [1] &quot;wsb006 error: was data pre processed&quot;
+## [1] &quot;wsb006 error: was analysis code based&quot;
+## [1] &quot;wsb006 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;wsb023 error: was analysis code based&quot;
+## [1] &quot;wsb010 error: was data pre processed&quot;
+## [1] &quot;wsb010 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;wsb014 error: data readily available&quot;
+## [1] &quot;wsb014 error: code available&quot;
+## [1] &quot;jwm022 error: data readily available&quot;
+## [1] &quot;jwm022 error: was data pre processed&quot;
+## [1] &quot;jwm022 error: code available&quot;
+## [1] &quot;jwm022 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;wsb008 error: data readily available&quot;
+## [1] &quot;wsb008 error: code available&quot;
+## [1] &quot;wsb008 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;jwm024 error: was analysis code based&quot;
+## [1] &quot;jwm024 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;jwm028 error: was data pre processed&quot;
+## [1] &quot;jwm028 error: was analysis code based&quot;
+## [1] &quot;jwm028 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;wsb038 error: Can.code.be.run.as.is..&quot;
+</code></pre>
+
+<h3>Fix anomolies listed above:</h3>
+
+<ol>
+<li>Data was readily available </li>
+</ol>
+
+<p>Data was sent by author so &ldquo;was data readily available&rdquo; should be &ldquo;False&rdquo;</p>
+
+<p><em>True for: wsb028, wsb018, wsb006, wsb014, wsb008</em></p>
+
+<p>Data was available in paper, so &ldquo;was data readily available&rdquo; should be &ldquo;True&rdquo;</p>
+
+<p><em>True for: wsb035, jwm022</em></p>
+
+<pre><code class="r">reviewed_data$Data.readily.available. &lt;- ifelse(
+  test = reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb028&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb018&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb006&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb014&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb008&quot;,
+  yes = &quot;False&quot;,
+  no = ifelse(
+    test = reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb035&quot; |
+      reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm022&quot;,
+    yes = &quot;True&quot;,
+    no = reviewed_data$Data.readily.available.
+  )
+)
+</code></pre>
+
+<ol>
+<li>Was code available?</li>
+</ol>
+
+<p>For jwm022 and wsb008, code actually was available</p>
+
+<p>For wsb013 and wsb014, analysis was not code-based so should be &ldquo;Not applicable..&rdquo;</p>
+
+<pre><code class="r">reviewed_data$Code.available &lt;- ifelse(
+  test = reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm022&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb008&quot;,
+  yes = &quot;True&quot;,
+  no = ifelse(
+    test = reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb013&quot; |
+      reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb014&quot;,
+    yes = &quot;Not applicable (e.g., not analyzed with code-based software)&quot;,
+    no = reviewed_data$Code.available
+  ))
+</code></pre>
+
+<ol>
+<li>Analysis was entirely code based</li>
+</ol>
+
+<p>Actually true for wsb035, jwm010, wsb006, wsb023, jwm024 and jwm028</p>
+
+<pre><code class="r">reviewed_data$Analysis.was.entirely.code.based &lt;- ifelse(
+  test = reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb035&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm010&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb006&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb023&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm024&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm028&quot;,
+  yes = &quot;True&quot;,
+  no = reviewed_data$Analysis.was.entirely.code.based)
+</code></pre>
+
+<ol>
+<li>Data was pre-processed</li>
+</ol>
+
+<p>True for wsb004 and wsb010, but raw data for jwm010, wsb006, jwm022</p>
+
+<pre><code class="r">reviewed_data$Was.the.data.pre.processed.or.shared.in.original.raw.format. &lt;- ifelse(
+  test = reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb004&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb010&quot; |
+    reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm028&quot;,
+  yes = &quot;Pre-processed&quot;,
+  no = ifelse(
+    test = reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm010&quot; |
+      reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;wsb006&quot; |
+      reviewed_data$Study.ID..e.g...wsb002.or.jwm040. == &quot;jwm022&quot;,
+    yes = &quot;Raw format&quot;,
+    no = reviewed_data$Was.the.data.pre.processed.or.shared.in.original.raw.format.
+  ))
+</code></pre>
+
+<ol>
+<li>Can code be run as is?</li>
+</ol>
+
+<p>Make sure this is &ldquo;NA&rdquo; for studies without code provided</p>
+
+<pre><code class="r">reviewed_data$Can.code.be.run.as.is..[reviewed_data$Code.available==&quot;False&quot;] &lt;- NA
+</code></pre>
+
+<p>For jwm022, the code could be run as-is, but this was mistakenly not completed
+on survey:</p>
+
+<pre><code class="r">reviewed_data$Can.code.be.run.as.is..[reviewed_data$Study.ID..e.g...wsb002.or.jwm040.==&quot;jwm022&quot;] &lt;- 5
+</code></pre>
+
+<p>The rest are just from where there are slight ranking changes between both 
+reviewers, so they&#39;ll be averaged out in the next step</p>
+
+<h3>Average numerical results and simultaneously check for errors</h3>
+
+<p>New dataset for averaged data</p>
+
+<pre><code class="r">averages &lt;- as.data.frame(matrix(NA, ncol = 6, nrow = length(study_names)))
+colnames(averages) &lt;- c(&quot;studyID&quot;, &quot;graphsReproduced&quot;, &quot;numbersReproduced&quot;, &quot;conclusionsReproduced&quot;, &quot;codeRunsAsIs&quot;, &quot;journal&quot;)
+</code></pre>
+
+<pre><code class="r">for(ss in 1:length(study_names)){
+  subsetdata &lt;- reviewed_data[reviewed_data$Study.ID..e.g...wsb002.or.jwm040.==study_names[ss],]
+
+  # Check for disagreements amongst answers
+  if(length(unique(subsetdata[,&quot;Data.readily.available.&quot;]))&gt;=2){
+    print(paste(study_names[ss], &quot;error: data readily available&quot;))
+  }
+  if(length(unique(subsetdata[,&quot;Was.the.data.pre.processed.or.shared.in.original.raw.format.&quot; ]))&gt;=2){
+    print(paste(study_names[ss], &quot;error: was data pre processed&quot;))
+  }
+  if(length(unique(subsetdata[,&quot;Code.available&quot; ]))&gt;=2){
+    print(paste(study_names[ss], &quot;error: code available&quot;))
+  }
+  if(length(unique(subsetdata[,&quot;Analysis.was.entirely.code.based&quot; ]))&gt;=2){
+    print(paste(study_names[ss], &quot;error: was analysis code based&quot;))
+  }
+
+  # Average over numerical responses
+  averages$studyID[ss] &lt;- study_names[ss]
+  averages$graphsReproduced[ss] &lt;- ifelse(study_names[ss] == &quot;wsb018&quot;,
+                                          yes = NA,
+                                          no = mean(subsetdata$Were.the.study.s.figures.reproduced.., na.rm = T))
+  averages$numbersReproduced[ss] &lt;- 
+    mean(subsetdata$Were.the.numbers.in.the.study.s.tables.and.or.results.text.quantitatively.reproduced..)
+  averages$conclusionsReproduced[ss] &lt;- 
+    mean(subsetdata$Were.the.study.s.conclusions.reproduced..)
+  averages$codeRunsAsIs[ss] &lt;- mean(subsetdata$Can.code.be.run.as.is..)
+
+  averages$journal[ss] &lt;- subsetdata$journal
+}
+</code></pre>
+
+<pre><code>## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+
+## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
+## replace is not a multiple of replacement length
+</code></pre>
+
+<pre><code class="r"># Do results look right?
+summary(averages)
+</code></pre>
+
+<pre><code>##    studyID          graphsReproduced numbersReproduced
+##  Length:19          Min.   :1.000    Min.   :1.000    
+##  Class :character   1st Qu.:1.750    1st Qu.:2.000    
+##  Mode  :character   Median :3.500    Median :4.000    
+##                     Mean   :3.278    Mean   :3.237    
+##                     3rd Qu.:4.875    3rd Qu.:4.000    
+##                     Max.   :5.000    Max.   :5.000    
+##                     NA&#39;s   :1                         
+##  conclusionsReproduced  codeRunsAsIs     journal         
+##  Min.   :1.000         Min.   :2.000   Length:19         
+##  1st Qu.:2.250         1st Qu.:3.000   Class :character  
+##  Median :4.500         Median :3.750   Mode  :character  
+##  Mean   :3.632         Mean   :3.650                     
+##  3rd Qu.:5.000         3rd Qu.:4.375                     
+##  Max.   :5.000         Max.   :5.000                     
+##                        NA&#39;s   :9
+</code></pre>
+
+<hr/>
+
+<h2>Match up metadata about each reviewed study with averages</h2>
 
 <hr/>
 
 <h2>Save Data</h2>
+
+<pre><code class="r">save(averages, file = &quot;data/processed_data/averages_of_reviewed_studies.Rdata&quot;)
+save(reviewed_data, file = &quot;data/processed_data/reviewed_studies_data.Rdata&quot;)
+save(new_data, file = &quot;data/processed_data/all_studies_data.Rdata&quot;)
+</code></pre>
 
 <hr/>
 
@@ -487,7 +854,7 @@ files wsb038 as &ldquo;False, for other reasons not stated above&rdquo;</p>
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       &lt;NA&gt;                        
-##  date     2019-01-29
+##  date     2019-02-21
 </code></pre>
 
 <pre><code>## Packages -----------------------------------------------------------------
@@ -508,6 +875,7 @@ files wsb038 as &ldquo;False, for other reasons not stated above&rdquo;</p>
 ##  markdown      0.8     2017-04-20 CRAN (R 3.3.2)
 ##  memoise       1.1.0   2017-04-21 CRAN (R 3.3.2)
 ##  methods     * 3.3.2   2016-10-31 local         
+##  mime          0.5     2016-07-07 CRAN (R 3.3.0)
 ##  R.methodsS3   1.7.1   2016-02-16 CRAN (R 3.3.0)
 ##  R.oo          1.21.0  2016-11-01 CRAN (R 3.3.0)
 ##  R.utils       2.5.0   2016-11-07 CRAN (R 3.3.0)

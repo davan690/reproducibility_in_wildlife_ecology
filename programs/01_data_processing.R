@@ -144,6 +144,13 @@ new_data$Why.not.reviewed <- ifelse(test =
 table(new_data$Why.not.reviewed)
 sum(table(new_data$Why.not.reviewed))
 
+#' _____________________________________________________________________________
+#' ## Add in journal column
+new_data$journal[grep("jwm", x = new_data$Study.ID..e.g...wsb002.or.jwm040.)] <-
+  "JWM"
+new_data$journal[grep("wsb", x = new_data$Study.ID..e.g...wsb002.or.jwm040.)] <-
+  "WSB"
+table(new_data$journal)
 
 #' _____________________________________________________________________________
 #' ## Summarize results for studies that were reviewed
@@ -191,9 +198,15 @@ for(ss in 1:length(study_names)){
   if(length(unique(subsetdata[,"Analysis.was.entirely.code.based" ]))>=2){
     print(paste(study_names[ss], "error: was analysis code based"))
   }
+  if(length(unique(subsetdata[,"Can.code.be.run.as.is.." ]))>=2){
+    print(paste(study_names[ss], "error: Can.code.be.run.as.is.."))
+  }
+  if(length(unique(subsetdata[,"Open.source.file.formats.used." ]))>=2){
+    print(paste(study_names[ss], "error: open source formats"))
+  }
 }
 
-#' Fix anomolies listed above:
+#' ### Fix anomolies listed above:
 #' 
 #' 1. Data was readily available 
 #' 
@@ -265,11 +278,23 @@ reviewed_data$Was.the.data.pre.processed.or.shared.in.original.raw.format. <- if
     no = reviewed_data$Was.the.data.pre.processed.or.shared.in.original.raw.format.
   ))
 
+#' 5. Can code be run as is?
+#' 
+#' Make sure this is "NA" for studies without code provided
+#' 
+reviewed_data$Can.code.be.run.as.is..[reviewed_data$Code.available=="False"] <- NA
+#' For jwm022, the code could be run as-is, but this was mistakenly not completed
+#' on survey:
+reviewed_data$Can.code.be.run.as.is..[reviewed_data$Study.ID..e.g...wsb002.or.jwm040.=="jwm022"] <- 5
+#' The rest are just from where there are slight ranking changes between both 
+#' reviewers, so they'll be averaged out in the next step
+#' 
+
 #' ### Average numerical results and simultaneously check for errors
 #' 
 #' New dataset for averaged data
-averages <- as.data.frame(matrix(NA, ncol = 4, nrow = length(study_names)))
-colnames(averages) <- c("studyID", "graphsReproduced", "numbersReproduced", "conclusionsReproduced")
+averages <- as.data.frame(matrix(NA, ncol = 6, nrow = length(study_names)))
+colnames(averages) <- c("studyID", "graphsReproduced", "numbersReproduced", "conclusionsReproduced", "codeRunsAsIs", "journal")
 #' 
 for(ss in 1:length(study_names)){
   subsetdata <- reviewed_data[reviewed_data$Study.ID..e.g...wsb002.or.jwm040.==study_names[ss],]
@@ -297,15 +322,30 @@ for(ss in 1:length(study_names)){
     mean(subsetdata$Were.the.numbers.in.the.study.s.tables.and.or.results.text.quantitatively.reproduced..)
   averages$conclusionsReproduced[ss] <- 
     mean(subsetdata$Were.the.study.s.conclusions.reproduced..)
+  averages$codeRunsAsIs[ss] <- mean(subsetdata$Can.code.be.run.as.is..)
+  
+  averages$journal[ss] <- subsetdata$journal[1]
+  
+  averages$dataAvailable[ss] <- subsetdata$Data.readily.available.[1]
+  averages$preProcessed[ss] <- 
+    subsetdata$Was.the.data.pre.processed.or.shared.in.original.raw.format.[1]
+  averages$codeBased[ss] <- subsetdata$Analysis.was.entirely.code.based[1]
+  averages$codeAvailable[ss] <- subsetdata$Code.available[1]
+  averages$openSource[ss] <- subsetdata$Open.source.file.formats.used.[1]
 }
-# Do results look right?
+#' Do results look right?
 summary(averages)
 
+#' If it was not code based, then codeAvailable  should equal NA
+averages$codeAvailable[averages$codeBased=="False"] <- NA
 
 #' _____________________________________________________________________________
 #' ## Save Data
 #' 
 #' 
+save(averages, file = "data/processed_data/averages_of_reviewed_studies.Rdata")
+save(reviewed_data, file = "data/processed_data/reviewed_studies_data.Rdata")
+save(new_data, file = "data/processed_data/all_studies_data.Rdata")
 
 #' _____________________________________________________________________________
 #' ## Footer
