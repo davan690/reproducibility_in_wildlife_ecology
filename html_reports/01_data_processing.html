@@ -563,11 +563,16 @@ for(ss in 1:length(study_names)){
   if(length(unique(subsetdata[,&quot;Can.code.be.run.as.is..&quot; ]))&gt;=2){
     print(paste(study_names[ss], &quot;error: Can.code.be.run.as.is..&quot;))
   }
+  if(length(unique(subsetdata[,&quot;Open.source.file.formats.used.&quot; ]))&gt;=2){
+    print(paste(study_names[ss], &quot;error: open source formats&quot;))
+  }
 }
 </code></pre>
 
 <pre><code>## [1] &quot;wsb028 error: data readily available&quot;
+## [1] &quot;jwm019 error: open source formats&quot;
 ## [1] &quot;wsb013 error: code available&quot;
+## [1] &quot;wsb013 error: open source formats&quot;
 ## [1] &quot;wsb035 error: data readily available&quot;
 ## [1] &quot;wsb035 error: was analysis code based&quot;
 ## [1] &quot;wsb004 error: was data pre processed&quot;
@@ -575,15 +580,19 @@ for(ss in 1:length(study_names)){
 ## [1] &quot;jwm010 error: was analysis code based&quot;
 ## [1] &quot;jwm010 error: Can.code.be.run.as.is..&quot;
 ## [1] &quot;wsb018 error: data readily available&quot;
+## [1] &quot;wsb018 error: open source formats&quot;
 ## [1] &quot;wsb006 error: data readily available&quot;
 ## [1] &quot;wsb006 error: was data pre processed&quot;
 ## [1] &quot;wsb006 error: was analysis code based&quot;
 ## [1] &quot;wsb006 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;wsb006 error: open source formats&quot;
 ## [1] &quot;wsb023 error: was analysis code based&quot;
 ## [1] &quot;wsb010 error: was data pre processed&quot;
 ## [1] &quot;wsb010 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;wsb010 error: open source formats&quot;
 ## [1] &quot;wsb014 error: data readily available&quot;
 ## [1] &quot;wsb014 error: code available&quot;
+## [1] &quot;wsb014 error: open source formats&quot;
 ## [1] &quot;jwm022 error: data readily available&quot;
 ## [1] &quot;jwm022 error: was data pre processed&quot;
 ## [1] &quot;jwm022 error: code available&quot;
@@ -596,7 +605,9 @@ for(ss in 1:length(study_names)){
 ## [1] &quot;jwm028 error: was data pre processed&quot;
 ## [1] &quot;jwm028 error: was analysis code based&quot;
 ## [1] &quot;jwm028 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;jwm004 error: open source formats&quot;
 ## [1] &quot;wsb038 error: Can.code.be.run.as.is..&quot;
+## [1] &quot;jwm027 error: open source formats&quot;
 </code></pre>
 
 <h3>Fix anomolies listed above:</h3>
@@ -704,6 +715,28 @@ on survey:</p>
 <p>The rest are just from where there are slight ranking changes between both 
 reviewers, so they&#39;ll be averaged out in the next step</p>
 
+<ol>
+<li><p>Update whether open source formats were used</p>
+
+<p>Studies jwm019, wsb006, wsb010, wsb014, jwm027 used open source formats
+like csv, R, unmarked, etc.</p>
+
+<p>Studies wsb013, wsb018, jwm004 used proprietary formats like JMP, ArcGIS,
+and Excel</p></li>
+</ol>
+
+<pre><code class="r">open &lt;-  c(&quot;jwm019&quot;, &quot;wsb006&quot;, &quot;wsb010&quot;, &quot;wsb014&quot;, &quot;jwm027&quot;)
+proprietary &lt;- c(&quot;wsb013&quot;, &quot;wsb018&quot;, &quot;jwm004&quot;)
+</code></pre>
+
+<p>Update discrepancies</p>
+
+<pre><code class="r">reviewed_data$Open.source.file.formats.used.[reviewed_data$Study.ID..e.g...wsb002.or.jwm040. %in% open] &lt;- 
+  &quot;True&quot;
+reviewed_data$Open.source.file.formats.used.[reviewed_data$Study.ID..e.g...wsb002.or.jwm040. %in% proprietary] &lt;- 
+  &quot;False&quot;
+</code></pre>
+
 <h3>Average numerical results and simultaneously check for errors</h3>
 
 <p>New dataset for averaged data</p>
@@ -740,70 +773,20 @@ colnames(averages) &lt;- c(&quot;studyID&quot;, &quot;graphsReproduced&quot;, &q
     mean(subsetdata$Were.the.study.s.conclusions.reproduced..)
   averages$codeRunsAsIs[ss] &lt;- mean(subsetdata$Can.code.be.run.as.is..)
 
-  averages$journal[ss] &lt;- subsetdata$journal
+  averages$journal[ss] &lt;- subsetdata$journal[1]
+
+  averages$dataAvailable[ss] &lt;- subsetdata$Data.readily.available.[1]
+  averages$preProcessed[ss] &lt;- 
+    subsetdata$Was.the.data.pre.processed.or.shared.in.original.raw.format.[1]
+  averages$codeBased[ss] &lt;- subsetdata$Analysis.was.entirely.code.based[1]
+  averages$codeAvailable[ss] &lt;- subsetdata$Code.available[1]
+  averages$openSource[ss] &lt;- subsetdata$Open.source.file.formats.used.[1]
 }
 </code></pre>
 
-<pre><code>## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
+<p>Do results look right?</p>
 
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-
-## Warning in averages$journal[ss] &lt;- subsetdata$journal: number of items to
-## replace is not a multiple of replacement length
-</code></pre>
-
-<pre><code class="r"># Do results look right?
-summary(averages)
+<pre><code class="r">summary(averages)
 </code></pre>
 
 <pre><code>##    studyID          graphsReproduced numbersReproduced
@@ -821,12 +804,39 @@ summary(averages)
 ##  Mean   :3.632         Mean   :3.650                     
 ##  3rd Qu.:5.000         3rd Qu.:4.375                     
 ##  Max.   :5.000         Max.   :5.000                     
-##                        NA&#39;s   :9
+##                        NA&#39;s   :9                         
+##  dataAvailable      preProcessed        codeBased        
+##  Length:19          Length:19          Length:19         
+##  Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character  
+##                                                          
+##                                                          
+##                                                          
+##                                                          
+##  codeAvailable       openSource       
+##  Length:19          Length:19         
+##  Class :character   Class :character  
+##  Mode  :character   Mode  :character  
+##                                       
+##                                       
+##                                       
+## 
 </code></pre>
 
-<hr/>
+<p>If it was not code based, then codeAvailable  should equal NA</p>
 
-<h2>Match up metadata about each reviewed study with averages</h2>
+<pre><code class="r">averages$codeAvailable[averages$codeBased==&quot;False&quot;] &lt;- NA
+</code></pre>
+
+<p>For wsb035, there are a few categories that do not apply, because it was
+a primarily simulated dataset, so they&#39;ll be 
+converted to NA</p>
+
+<pre><code class="r">averages$openSource[averages$studyID==&quot;wsb035&quot;] &lt;- NA
+averages$preProcessed[averages$studyID==&quot;wsb035&quot;] &lt;- NA
+averages$dataAvailable[averages$studyID==&quot;wsb035&quot;] &lt;- NA
+averages$codeBased[averages$studyID==&quot;wsb035&quot;] &lt;- NA
+</code></pre>
 
 <hr/>
 
@@ -854,7 +864,7 @@ save(new_data, file = &quot;data/processed_data/all_studies_data.Rdata&quot;)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       &lt;NA&gt;                        
-##  date     2019-02-21
+##  date     2019-02-22
 </code></pre>
 
 <pre><code>## Packages -----------------------------------------------------------------

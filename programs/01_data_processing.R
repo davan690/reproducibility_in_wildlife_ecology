@@ -290,6 +290,24 @@ reviewed_data$Can.code.be.run.as.is..[reviewed_data$Study.ID..e.g...wsb002.or.jw
 #' reviewers, so they'll be averaged out in the next step
 #' 
 
+#' 6. Update whether open source formats were used
+#' 
+#'  Studies jwm019, wsb006, wsb010, wsb014, jwm027 used open source formats
+#'  like csv, R, unmarked, etc.
+#'  
+#'  Studies wsb013, wsb018, jwm004 used proprietary formats like JMP, ArcGIS,
+#'  and Excel
+open <-  c("jwm019", "wsb006", "wsb010", "wsb014", "jwm027")
+proprietary <- c("wsb013", "wsb018", "jwm004")
+
+#' Update discrepancies
+#' 
+reviewed_data$Open.source.file.formats.used.[reviewed_data$Study.ID..e.g...wsb002.or.jwm040. %in% open] <- 
+  "True"
+reviewed_data$Open.source.file.formats.used.[reviewed_data$Study.ID..e.g...wsb002.or.jwm040. %in% proprietary] <- 
+  "False"
+
+
 #' ### Average numerical results and simultaneously check for errors
 #' 
 #' New dataset for averaged data
@@ -338,6 +356,14 @@ summary(averages)
 
 #' If it was not code based, then codeAvailable  should equal NA
 averages$codeAvailable[averages$codeBased=="False"] <- NA
+
+#' For wsb035, there are a few categories that do not apply, because it was
+#' a primarily simulated dataset, so they'll be 
+#' converted to NA
+averages$openSource[averages$studyID=="wsb035"] <- NA
+averages$preProcessed[averages$studyID=="wsb035"] <- NA
+averages$dataAvailable[averages$studyID=="wsb035"] <- NA
+averages$codeBased[averages$studyID=="wsb035"] <- NA
 
 #' _____________________________________________________________________________
 #' ## Save Data
