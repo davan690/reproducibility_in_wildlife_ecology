@@ -131,7 +131,8 @@ plottingdata$lower <- plottingdata$Score - plottingdata$SE
 ggplot(data = plottingdata, aes(x = Category, y = Score, colour = journal))+
   geom_pointrange(aes(ymin = lower, ymax = upper, shape = journal), 
                  position = position_dodge(width = 0.6))+
-  ylim(1,5)
+  ylim(1,5)+
+  theme_classic()
 
 
 #' _____________________________________________________________________________
