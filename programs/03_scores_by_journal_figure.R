@@ -46,7 +46,7 @@ plottingdata$Score[1] <-
 plottingdata$SE[1] <- 
   sd(na.exclude(averages$graphsReproduced[averages$journal=="JWM"]))/
   sqrt(na.exclude(length(averages$graphsReproduced[averages$journal=="JWM"])))
-plottingdata$Category[1] <- "Figures Reproduced"
+plottingdata$Category[1] <- "Figures"
 plottingdata$journal[1] <- "JWM"
 
 #' WSB
@@ -55,14 +55,14 @@ plottingdata$Score[2] <-
 plottingdata$SE[2] <- 
   sd(na.exclude(averages$graphsReproduced[averages$journal=="WSB"]))/
   sqrt(na.exclude(length(averages$graphsReproduced[averages$journal=="WSB"])))
-plottingdata$Category[2] <- "Figures Reproduced"
+plottingdata$Category[2] <- "Figures"
 plottingdata$journal[2] <- "WSB"
 
 #' Overall
 plottingdata$Score[3] <- mean(na.exclude(averages$graphsReproduced))
 plottingdata$SE[3] <- sd(na.exclude(averages$graphsReproduced))/
   sqrt(na.exclude(length(averages$graphsReproduced)))
-plottingdata$Category[3] <- "Figures Reproduced"
+plottingdata$Category[3] <- "Figures"
 plottingdata$journal[3] <- "Overall"
 
 
@@ -74,7 +74,7 @@ plottingdata$Score[4] <-
 plottingdata$SE[4] <- 
   sd(na.exclude(averages$numbersReproduced[averages$journal=="JWM"]))/
   sqrt(na.exclude(length(averages$numbersReproduced[averages$journal=="JWM"])))
-plottingdata$Category[4] <- "Numbers Reproduced"
+plottingdata$Category[4] <- "Numbers"
 plottingdata$journal[4] <- "JWM"
 
 #' WSB
@@ -83,14 +83,14 @@ plottingdata$Score[5] <-
 plottingdata$SE[5] <- 
   sd(na.exclude(averages$numbersReproduced[averages$journal=="WSB"]))/
   sqrt(na.exclude(length(averages$numbersReproduced[averages$journal=="WSB"])))
-plottingdata$Category[5] <- "Numbers Reproduced"
+plottingdata$Category[5] <- "Numbers"
 plottingdata$journal[5] <- "WSB"
 
 #' Overall
 plottingdata$Score[6] <- mean(na.exclude(averages$numbersReproduced))
 plottingdata$SE[6] <- sd(na.exclude(averages$numbersReproduced))/
   sqrt(na.exclude(length(averages$numbersReproduced)))
-plottingdata$Category[6] <- "Numbers Reproduced"
+plottingdata$Category[6] <- "Numbers"
 plottingdata$journal[6] <- "Overall"
 
 
@@ -102,7 +102,7 @@ plottingdata$Score[7] <-
 plottingdata$SE[7] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$journal=="JWM"]))/
   sqrt(na.exclude(length(averages$conclusionsReproduced[averages$journal=="JWM"])))
-plottingdata$Category[7] <- "Conclusions Reproduced"
+plottingdata$Category[7] <- "Conclusions"
 plottingdata$journal[7] <- "JWM"
 
 #' WSB
@@ -111,14 +111,14 @@ plottingdata$Score[8] <-
 plottingdata$SE[8] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$journal=="WSB"]))/
   sqrt(na.exclude(length(averages$conclusionsReproduced[averages$journal=="WSB"])))
-plottingdata$Category[8] <- "Conclusions Reproduced"
+plottingdata$Category[8] <- "Conclusions"
 plottingdata$journal[8] <- "WSB"
 
 #' Overall
 plottingdata$Score[9] <- mean(na.exclude(averages$conclusionsReproduced))
 plottingdata$SE[9] <- sd(na.exclude(averages$conclusionsReproduced))/
   sqrt(na.exclude(length(averages$conclusionsReproduced)))
-plottingdata$Category[9] <- "Conclusions Reproduced"
+plottingdata$Category[9] <- "Conclusions"
 plottingdata$journal[9] <- "Overall"
 
 #' ### Calculate lower and upper limits for all categories
@@ -127,12 +127,13 @@ plottingdata$lower <- plottingdata$Score - plottingdata$SE
 
 #' _____________________________________________________________________________
 #' ## Create figure
-#+ figure2
+#+ figure2, fig.width=3.46, fig.height=5
 ggplot(data = plottingdata, aes(x = Category, y = Score, colour = journal))+
   geom_pointrange(aes(ymin = lower, ymax = upper, shape = journal), 
                  position = position_dodge(width = 0.6))+
   ylim(1,5)+
-  theme_classic()
+  theme_classic()+
+  theme(legend.position = "top", legend.title = element_blank())
 
 
 #' _____________________________________________________________________________
