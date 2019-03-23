@@ -133,7 +133,9 @@ ggplot(data = plottingdata, aes(x = Category, y = Score, colour = journal))+
                  position = position_dodge(width = 0.6))+
   ylim(1,5)+
   theme_classic()+
-  theme(legend.position = "top", legend.title = element_blank())
+  theme(legend.position = "top", legend.title = element_blank())+
+  xlab("Reproducibility criterion")+
+  ylab("Reproducibility score")
 
 
 #' _____________________________________________________________________________
