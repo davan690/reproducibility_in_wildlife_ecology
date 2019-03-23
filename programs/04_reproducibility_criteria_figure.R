@@ -363,7 +363,8 @@ ggplot(data = plottingdata,
   facet_wrap(~Category, nrow=3)+
   ylim(1,5)+
   theme_classic()+
-  theme(legend.position = "top")
+  theme(legend.position = "top")+
+  ylab("Reproducibility score")
 
 
 #' _____________________________________________________________________________
