@@ -127,7 +127,7 @@ plottingdata$lower <- plottingdata$Score - plottingdata$SE
 
 #' _____________________________________________________________________________
 #' ## Create figure
-#+ figure2, fig.width=3.46, fig.height=3
+#+ figure2, fig.width=3.46, fig.height=3, dpi=200
 ggplot(data = plottingdata, aes(x = Category, y = Score, colour = journal))+
   geom_pointrange(aes(ymin = lower, ymax = upper, shape = journal), 
                  position = position_dodge(width = 0.6))+

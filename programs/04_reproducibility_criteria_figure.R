@@ -355,7 +355,7 @@ plottingdata$lower <- plottingdata$Score - plottingdata$SE
 
 #' _____________________________________________________________________________
 #' ## Create figure
-#+ figure3, fig.width=3.46, fig.height=5
+#+ figure3, fig.width=3.46, fig.height=5, dpi=200
 ggplot(data = plottingdata, 
        aes(x = Question, y = Score, colour = Response))+
   geom_pointrange(aes(ymin = lower, ymax = upper, shape = Response), 
