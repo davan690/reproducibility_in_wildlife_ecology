@@ -138,6 +138,28 @@ ggplot(data = plottingdata, aes(x = Category, y = Score, colour = journal))+
   ylab("Reproducibility score")
 
 
+testdata1 <- averages[,c("studyID", "graphsReproduced", "journal")]
+testdata2 <- averages[,c("studyID", "numbersReproduced", "journal")]
+testdata3 <- averages[,c("studyID", "conclusionsReproduced", "journal")]
+colnames(testdata1) <- 
+  colnames(testdata2) <- 
+  colnames(testdata3) <- c("studyID", "Score", "journal")
+testdata1$Category <- "Figures"
+testdata2$Category <- "Numbers"
+testdata3$Category <- "Conclusions"
+plottingdata.long <- rbind(testdata1, testdata2, testdata3)
+
+ggplot(data = plottingdata.long, aes(x = Category, y = Score, colour = journal, shape = journal))+
+  geom_jitter(position = position_dodge(width = 0.7))+
+  geom_pointrange(data = plottingdata,
+                  aes(ymin = lower, ymax = upper, shape = journal), 
+                  position = position_dodge(width = 0.6))+
+  ylim(1,5)+
+  theme_classic()+
+  theme(legend.position = "top", legend.title = element_blank())+
+  xlab("Reproducibility criterion")+
+  ylab("Reproducibility score")
+
 #' _____________________________________________________________________________
 #' ## Footer
 #' 
