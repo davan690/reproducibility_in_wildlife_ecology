@@ -118,16 +118,16 @@ plottingdata$lower <- plottingdata$Score - plottingdata$SD
 
 #' Compile raw data in long format
 #'
-testdata1 <- averages[,c("studyID", "graphsReproduced", "journal")]
-testdata2 <- averages[,c("studyID", "numbersReproduced", "journal")]
-testdata3 <- averages[,c("studyID", "conclusionsReproduced", "journal")]
-colnames(testdata1) <- 
-  colnames(testdata2) <- 
-  colnames(testdata3) <- c("studyID", "Score", "journal")
-testdata1$Category <- "Figures"
-testdata2$Category <- "Numbers"
-testdata3$Category <- "Conclusions"
-plottingdata.long <- rbind(testdata1, testdata2, testdata3)
+tempdata1 <- averages[,c("studyID", "graphsReproduced", "journal")]
+tempdata2 <- averages[,c("studyID", "numbersReproduced", "journal")]
+tempdata3 <- averages[,c("studyID", "conclusionsReproduced", "journal")]
+colnames(tempdata1) <- 
+  colnames(tempdata2) <- 
+  colnames(tempdata3) <- c("studyID", "Score", "journal")
+tempdata1$Category <- "Figures"
+tempdata2$Category <- "Numbers"
+tempdata3$Category <- "Conclusions"
+plottingdata.long <- rbind(tempdata1, tempdata2, tempdata3)
 
 #' _____________________________________________________________________________
 #' ## Create figure
