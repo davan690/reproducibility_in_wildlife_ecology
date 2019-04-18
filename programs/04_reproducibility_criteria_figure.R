@@ -46,7 +46,7 @@ plottingdata$Score[1] <-
 plottingdata$SD[1] <- 
   sd(na.exclude(averages$graphsReproduced[averages$dataAvailable=="True"]))
 plottingdata$Category[1] <- "Figures reproduced"
-plottingdata$Question[1] <- "Q5"
+plottingdata$Question[1] <- "Q5: Data available?"
 plottingdata$Response[1] <- "Yes"
 
 #' No, graphs
@@ -55,7 +55,7 @@ plottingdata$Score[2] <-
 plottingdata$SD[2] <- 
   sd(na.exclude(averages$graphsReproduced[averages$dataAvailable=="False"]))
 plottingdata$Category[2] <- "Figures reproduced"
-plottingdata$Question[2] <- "Q5"
+plottingdata$Question[2] <- "Q5: Data available?"
 plottingdata$Response[2] <- "No"
 
 #' Yes, numbers
@@ -64,7 +64,7 @@ plottingdata$Score[3] <-
 plottingdata$SD[3] <- 
   sd(na.exclude(averages$numbersReproduced[averages$dataAvailable=="True"]))
 plottingdata$Category[3] <- "Numbers reproduced"
-plottingdata$Question[3] <- "Q5"
+plottingdata$Question[3] <- "Q5: Data available?"
 plottingdata$Response[3] <- "Yes"
 
 #' No, numbers
@@ -73,7 +73,7 @@ plottingdata$Score[4] <-
 plottingdata$SD[4] <- 
   sd(na.exclude(averages$numbersReproduced[averages$dataAvailable=="False"]))
 plottingdata$Category[4] <- "Numbers reproduced"
-plottingdata$Question[4] <- "Q5"
+plottingdata$Question[4] <- "Q5: Data available?"
 plottingdata$Response[4] <- "No"
 
 #' Yes, conclusions
@@ -82,7 +82,7 @@ plottingdata$Score[5] <-
 plottingdata$SD[5] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$dataAvailable=="True"]))
 plottingdata$Category[5] <- "Conclusions reproduced"
-plottingdata$Question[5] <- "Q5"
+plottingdata$Question[5] <- "Q5: Data available?"
 plottingdata$Response[5] <- "Yes"
 
 #' No, conclusions
@@ -91,7 +91,7 @@ plottingdata$Score[6] <-
 plottingdata$SD[6] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$dataAvailable=="False"]))
 plottingdata$Category[6] <- "Conclusions reproduced"
-plottingdata$Question[6] <- "Q5"
+plottingdata$Question[6] <- "Q5: Data available?"
 plottingdata$Response[6] <- "No"
 
 #' ### Fill in with Data Raw Question
@@ -102,7 +102,7 @@ plottingdata$Score[7] <-
 plottingdata$SD[7] <- 
   sd(na.exclude(averages$graphsReproduced[averages$preProcessed=="Raw format"]))
 plottingdata$Category[7] <- "Figures reproduced"
-plottingdata$Question[7] <- "Q6"
+plottingdata$Question[7] <- "Q6: Raw data?"
 plottingdata$Response[7] <- "Yes"
 
 #' No, graphs
@@ -111,7 +111,7 @@ plottingdata$Score[8] <-
 plottingdata$SD[8] <- 
   sd(na.exclude(averages$graphsReproduced[averages$preProcessed=="Pre-processed"]))
 plottingdata$Category[8] <- "Figures reproduced"
-plottingdata$Question[8] <- "Q6"
+plottingdata$Question[8] <- "Q6: Raw data?"
 plottingdata$Response[8] <- "No"
 
 #' Yes, numbers
@@ -120,7 +120,7 @@ plottingdata$Score[9] <-
 plottingdata$SD[9] <- 
   sd(na.exclude(averages$numbersReproduced[averages$preProcessed=="Raw format"]))
 plottingdata$Category[9] <- "Numbers reproduced"
-plottingdata$Question[9] <- "Q6"
+plottingdata$Question[9] <- "Q6: Raw data?"
 plottingdata$Response[9] <- "Yes"
 
 #' No, numbers
@@ -129,7 +129,7 @@ plottingdata$Score[10] <-
 plottingdata$SD[10] <- 
   sd(na.exclude(averages$numbersReproduced[averages$preProcessed=="Pre-processed"]))
 plottingdata$Category[10] <- "Numbers reproduced"
-plottingdata$Question[10] <- "Q6"
+plottingdata$Question[10] <- "Q6: Raw data?"
 plottingdata$Response[10] <- "No"
 
 #' Yes, conclusions
@@ -138,7 +138,7 @@ plottingdata$Score[11] <-
 plottingdata$SD[11] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$preProcessed=="Raw format"]))
 plottingdata$Category[11] <- "Conclusions reproduced"
-plottingdata$Question[11] <- "Q6"
+plottingdata$Question[11] <- "Q6: Raw data?"
 plottingdata$Response[11] <- "Yes"
 
 #' No, conclusions
@@ -147,7 +147,7 @@ plottingdata$Score[12] <-
 plottingdata$SD[12] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$preProcessed=="Pre-processed"]))
 plottingdata$Category[12] <- "Conclusions reproduced"
-plottingdata$Question[12] <- "Q6"
+plottingdata$Question[12] <- "Q6: Raw data?"
 plottingdata$Response[12] <- "No"
 
 #' ### Fill in with Code Based Question
@@ -158,7 +158,7 @@ plottingdata$Score[13] <-
 plottingdata$SD[13] <- 
   sd(na.exclude(averages$graphsReproduced[averages$codeBased=="True"]))
 plottingdata$Category[13] <- "Figures reproduced"
-plottingdata$Question[13] <- "Q8"
+plottingdata$Question[13] <- "Q8: Code based?"
 plottingdata$Response[13] <- "Yes"
 
 #' No, graphs
@@ -167,7 +167,7 @@ plottingdata$Score[14] <-
 plottingdata$SD[14] <- 
   sd(na.exclude(averages$graphsReproduced[averages$codeBased=="False"]))
 plottingdata$Category[14] <- "Figures reproduced"
-plottingdata$Question[14] <- "Q8"
+plottingdata$Question[14] <- "Q8: Code based?"
 plottingdata$Response[14] <- "No"
 
 #' Yes, numbers
@@ -176,7 +176,7 @@ plottingdata$Score[15] <-
 plottingdata$SD[15] <- 
   sd(na.exclude(averages$numbersReproduced[averages$codeBased=="True"]))
 plottingdata$Category[15] <- "Numbers reproduced"
-plottingdata$Question[15] <- "Q8"
+plottingdata$Question[15] <- "Q8: Code based?"
 plottingdata$Response[15] <- "Yes"
 
 #' No, numbers
@@ -185,7 +185,7 @@ plottingdata$Score[16] <-
 plottingdata$SD[16] <- 
   sd(na.exclude(averages$numbersReproduced[averages$codeBased=="False"]))
 plottingdata$Category[16] <- "Numbers reproduced"
-plottingdata$Question[16] <- "Q8"
+plottingdata$Question[16] <- "Q8: Code based?"
 plottingdata$Response[16] <- "No"
 
 #' Yes, conclusions
@@ -194,7 +194,7 @@ plottingdata$Score[17] <-
 plottingdata$SD[17] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$codeBased=="True"]))
 plottingdata$Category[17] <- "Conclusions reproduced"
-plottingdata$Question[17] <- "Q8"
+plottingdata$Question[17] <- "Q8: Code based?"
 plottingdata$Response[17] <- "Yes"
 
 #' No, conclusions
@@ -203,7 +203,7 @@ plottingdata$Score[18] <-
 plottingdata$SD[18] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$codeBased=="False"]))
 plottingdata$Category[18] <- "Conclusions reproduced"
-plottingdata$Question[18] <- "Q8"
+plottingdata$Question[18] <- "Q8: Code based?"
 plottingdata$Response[18] <- "No"
 
 #' ### Fill in with Code Available Question
@@ -214,7 +214,7 @@ plottingdata$Score[19] <-
 plottingdata$SD[19] <- 
   sd(na.exclude(averages$graphsReproduced[averages$codeAvailable=="True"]))
 plottingdata$Category[19] <- "Figures reproduced"
-plottingdata$Question[19] <- "Q7"
+plottingdata$Question[19] <- "Q7: Code available?"
 plottingdata$Response[19] <- "Yes"
 
 #' No, graphs
@@ -223,7 +223,7 @@ plottingdata$Score[20] <-
 plottingdata$SD[20] <- 
   sd(na.exclude(averages$graphsReproduced[averages$codeAvailable=="False"]))
 plottingdata$Category[20] <- "Figures reproduced"
-plottingdata$Question[20] <- "Q7"
+plottingdata$Question[20] <- "Q7: Code available?"
 plottingdata$Response[20] <- "No"
 
 #' Yes, numbers
@@ -232,7 +232,7 @@ plottingdata$Score[21] <-
 plottingdata$SD[21] <- 
   sd(na.exclude(averages$numbersReproduced[averages$codeAvailable=="True"]))
 plottingdata$Category[21] <- "Numbers reproduced"
-plottingdata$Question[21] <- "Q7"
+plottingdata$Question[21] <- "Q7: Code available?"
 plottingdata$Response[21] <- "Yes"
 
 #' No, numbers
@@ -241,7 +241,7 @@ plottingdata$Score[22] <-
 plottingdata$SD[22] <- 
   sd(na.exclude(averages$numbersReproduced[averages$codeAvailable=="False"]))
 plottingdata$Category[22] <- "Numbers reproduced"
-plottingdata$Question[22] <- "Q7"
+plottingdata$Question[22] <- "Q7: Code available?"
 plottingdata$Response[22] <- "No"
 
 #' Yes, conclusions
@@ -250,7 +250,7 @@ plottingdata$Score[23] <-
 plottingdata$SD[23] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$codeAvailable=="True"]))
 plottingdata$Category[23] <- "Conclusions reproduced"
-plottingdata$Question[23] <- "Q7"
+plottingdata$Question[23] <- "Q7: Code available?"
 plottingdata$Response[23] <- "Yes"
 
 #' No, conclusions
@@ -259,7 +259,7 @@ plottingdata$Score[24] <-
 plottingdata$SD[24] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$codeAvailable=="False"]))
 plottingdata$Category[24] <- "Conclusions reproduced"
-plottingdata$Question[24] <- "Q7"
+plottingdata$Question[24] <- "Q7: Code available?"
 plottingdata$Response[24] <- "No"
 
 #' ### Fill in with Open Source Question
@@ -270,7 +270,7 @@ plottingdata$Score[25] <-
 plottingdata$SD[25] <- 
   sd(na.exclude(averages$graphsReproduced[averages$openSource=="True"]))
 plottingdata$Category[25] <- "Figures reproduced"
-plottingdata$Question[25] <- "Q9"
+plottingdata$Question[25] <- "Q9: Open source?"
 plottingdata$Response[25] <- "Yes"
 
 #' No, graphs
@@ -279,7 +279,7 @@ plottingdata$Score[26] <-
 plottingdata$SD[26] <- 
   sd(na.exclude(averages$graphsReproduced[averages$openSource=="False"]))
 plottingdata$Category[26] <- "Figures reproduced"
-plottingdata$Question[26] <- "Q9"
+plottingdata$Question[26] <- "Q9: Open source?"
 plottingdata$Response[26] <- "No"
 
 #' Yes, numbers
@@ -288,7 +288,7 @@ plottingdata$Score[27] <-
 plottingdata$SD[27] <- 
   sd(na.exclude(averages$numbersReproduced[averages$openSource=="True"]))
 plottingdata$Category[27] <- "Numbers reproduced"
-plottingdata$Question[27] <- "Q9"
+plottingdata$Question[27] <- "Q9: Open source?"
 plottingdata$Response[27] <- "Yes"
 
 #' No, numbers
@@ -297,7 +297,7 @@ plottingdata$Score[28] <-
 plottingdata$SD[28] <- 
   sd(na.exclude(averages$numbersReproduced[averages$openSource=="False"]))
 plottingdata$Category[28] <- "Numbers reproduced"
-plottingdata$Question[28] <- "Q9"
+plottingdata$Question[28] <- "Q9: Open source?"
 plottingdata$Response[28] <- "No"
 
 #' Yes, conclusions
@@ -306,7 +306,7 @@ plottingdata$Score[29] <-
 plottingdata$SD[29] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$openSource=="True"]))
 plottingdata$Category[29] <- "Conclusions reproduced"
-plottingdata$Question[29] <- "Q9"
+plottingdata$Question[29] <- "Q9: Open source?"
 plottingdata$Response[29] <- "Yes"
 
 #' No, conclusions
@@ -315,7 +315,7 @@ plottingdata$Score[30] <-
 plottingdata$SD[30] <- 
   sd(na.exclude(averages$conclusionsReproduced[averages$openSource=="False"]))
 plottingdata$Category[30] <- "Conclusions reproduced"
-plottingdata$Question[30] <- "Q9"
+plottingdata$Question[30] <- "Q9: Open source?"
 plottingdata$Response[30] <- "No"
 
 #' ### Calculate upper and lower limits for plotting
@@ -323,13 +323,71 @@ plottingdata$Response[30] <- "No"
 plottingdata$upper <- plottingdata$Score + plottingdata$SD
 plottingdata$lower <- plottingdata$Score - plottingdata$SD
 
+
+#' Compile raw data in long format
+#'
+tempdata1 <- averages[,c("studyID", "graphsReproduced", 
+                         "codeRunsAsIs", "dataAvailable", "preProcessed",
+                         "codeBased", "codeAvailable","openSource" )]
+tempdata2 <- averages[,c("studyID", "numbersReproduced", 
+                         "codeRunsAsIs", "dataAvailable", "preProcessed",
+                         "codeBased", "codeAvailable","openSource" )]
+tempdata3 <- averages[,c("studyID", "conclusionsReproduced", 
+                         "codeRunsAsIs", "dataAvailable", "preProcessed",
+                         "codeBased", "codeAvailable","openSource" )]
+colnames(tempdata1) <- 
+  colnames(tempdata2) <- 
+  colnames(tempdata3) <- c("studyID", "Score", 
+                           "codeRunsAsIs", "dataAvailable", "preProcessed",
+                           "codeBased", "codeAvailable","openSource" )
+tempdata1$Category <- "Figures reproduced"
+tempdata2$Category <- "Numbers reproduced"
+tempdata3$Category <- "Conclusions reproduced"
+plottingdata.long <- rbind(tempdata1, tempdata2, tempdata3)
+
+tempdata.a <- plottingdata.long[,c("studyID", "Score", "Category", "codeRunsAsIs")]
+tempdata.b <- plottingdata.long[,c("studyID", "Score", "Category", "dataAvailable")]
+tempdata.c <- plottingdata.long[,c("studyID", "Score", "Category", "preProcessed")]
+tempdata.d <- plottingdata.long[,c("studyID", "Score", "Category", "codeBased")]
+tempdata.e <- plottingdata.long[,c("studyID", "Score", "Category", "codeAvailable")]
+tempdata.f <- plottingdata.long[,c("studyID", "Score", "Category", "openSource")]
+
+tempdata.b$question <- "Q5: Data available?"
+tempdata.c$question <- "Q6: Raw data?"
+tempdata.d$question <- "Q8: Code based?"
+tempdata.e$question <- "Q7: Code available?"
+tempdata.f$question <- "Q9: Open source?"
+
+tempdata.b$response <- ifelse(tempdata.b$dataAvailable=="True", yes = "Yes", no = "No")
+tempdata.c$response <- ifelse(tempdata.c$preProcessed=="Raw format", yes = "Yes", no = "No")
+tempdata.d$response <- ifelse(tempdata.d$codeBased=="True", yes = "Yes", no = "No")
+tempdata.e$response <- ifelse(tempdata.e$codeAvailable=="True", yes = "Yes", no = "No")
+tempdata.f$response <- ifelse(tempdata.f$openSource=="True", yes = "Yes", no = "No")
+
+colnames(tempdata.f) <-
+  colnames(tempdata.e) <- 
+  colnames(tempdata.d) <-
+  colnames(tempdata.c) <- 
+  colnames(tempdata.b) <- c("studyID", "Score", "Category", "originalResponse", 
+                            "Question", "Response")
+
+plottingdata.longComplete <- rbind(tempdata.b, tempdata.c, tempdata.d,
+                                   tempdata.e, tempdata.f)
+
+# Remove NAs from response column
+plottingdata.longComplete <- plottingdata.longComplete[!is.na(plottingdata.longComplete$Response),]
+
 #' _____________________________________________________________________________
 #' ## Create figure
-#+ figure3, fig.width=3.46, fig.height=5, dpi=200
-ggplot(data = plottingdata, 
-       aes(x = Question, y = Score, colour = Response))+
-  geom_pointrange(aes(ymin = lower, ymax = upper, shape = Response), 
+#+ figure3, fig.width=7.4, fig.height=5, dpi=200
+ggplot(data = plottingdata.longComplete, 
+       aes(x = Question, y = Score, shape = Response, colour=Response))+
+  geom_pointrange(data = plottingdata,
+                  aes(ymin = lower, ymax = upper, shape = Response), 
                  position = position_dodge(width = 0.6))+
+  geom_jitter(position = position_jitterdodge(jitter.width = 0.15,
+                                              jitter.height = 0.15,
+                                              dodge.width = 0.7), color="black")+
   facet_wrap(~Category, nrow=3)+
   #ylim(1,5)+
   theme_classic()+
