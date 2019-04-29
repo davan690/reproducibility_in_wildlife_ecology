@@ -377,6 +377,13 @@ plottingdata.longComplete <- rbind(tempdata.b, tempdata.c, tempdata.d,
 # Remove NAs from response column
 plottingdata.longComplete <- plottingdata.longComplete[!is.na(plottingdata.longComplete$Response),]
 
+
+#' _____________________________________________________________________________
+#' ## Cut error bars off at 5
+#' 
+plottingdata$cutoff <- ifelse(test = plottingdata$upper >= 5, yes = 5, no = NA)
+plottingdata$upper <- ifelse(test = plottingdata$upper > 5, yes = 5, no = plottingdata$upper)
+
 #' _____________________________________________________________________________
 #' ## Create figure
 #+ figure3, fig.width=7.4, fig.height=5, dpi=200
@@ -389,7 +396,7 @@ ggplot(data = plottingdata.longComplete,
                                               jitter.height = 0.15,
                                               dodge.width = 0.7), color="black")+
   facet_wrap(~Category, nrow=3)+
-  #ylim(1,5)+
+  #ylim(1,5.9)+
   theme_classic()+
   theme(legend.position = "top")+
   ylab("Reproducibility score")
