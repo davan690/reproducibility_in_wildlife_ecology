@@ -1,0 +1,6 @@
+Package: placeholder
+Type: Book
+Title: Small mammal dynamics in NZ beech forests
+Version: 0.0.1
+Imports: bookdown
+Remotes: davan690/beech-publication-wr

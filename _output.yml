@@ -1,0 +1,22 @@
+bookdown::gitbook:
+  css: style.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">Reproducibily in ecological research.</a></li>
+      after: |
+        <li><a href="https://github.com/davan690/reproducibility_in_wildlife_ecology" target="blank">Published with bookdown</a></li>
+    edit: https://github.com/davan690/reproducibility_in_wildlife_ecology/docs/edit/master/%s
+    download: ["pdf", "epub", "mobi", "docx"]
+    link-citations: yes
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+  latex_engine: xelatex
+  citation_package: natbib
+bookdown::epub_book: default
+bookdown::word_document2:
+  reference_docx: ms.docx
+  fig_caption: yes
+  toc: yes
+bookdown::html_document2: default
