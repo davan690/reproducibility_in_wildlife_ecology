@@ -7,6 +7,92 @@ subtitle: "The draft manuscript extended from aaarchmiller/reproducibility_in_wi
 bibliography: ecol-reprod.bib
 ---
 
+
+
+Here is an idea from a manuscript I found online..... here...
+
+`aaarchmiller/reproducibility_in_wildlife_ecology`
+
+
+
+## Overview
+
+Why is this important....
+
+- SSM modelling issues (secrets thing...)
+- errors in life history structures are common (paper now)
+- reproducibility is very important (SCIENCE CRISIS)
+- predator free nz 2050
+  - community groups are given concepts not details.... CEO etc relationship?
+
+
+
+A literature review....
+
+- HArd to start
+- But as a computational workflow it is valueable to build
+- very small collection of key points....
+  - figures of concepts
+- To find out key words...
+  - `diagrammR`
+
+
+
+Survey...
+
+- extend from paper here...
+- already have draft suvery
+- email and ask??
+
+
+
+## Method
+
+**Lit review**
+
+- collect all literature
+  - Using this collection of keywords
+
+
+
+
+
+**Gerenal visualz and patterns NZ? global?**
+
+![image-20191202103427895](C:\Code\reproducibility_in_wildlife_ecology\img\image-20191202103427895.png)
+
+**Survey?**
+
+
+
+## Results
+
+
+
+## Discussion
+
+Need to just find and extract images from PDF....
+
+
+
+
+
+Time and increase in diagram structure... 
+
+#### package to make them reproducible iswell..... here....
+
+
+
+
+
+The key aspects I am interested in here is the consisitancy of model diagrams in invasive species modelling in NZ and globally... for example.....
+
+![image-20191201090804077](C:\Code\reproducibility_in_wildlife_ecology\img\image-20191201090804077.png)
+
+
+
+
+
 # Summary {#summary}
 
 Processing data from Google form Description: Takes raw csv file from the Google form and updates it for analysis. 
